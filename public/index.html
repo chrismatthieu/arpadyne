@@ -38,7 +38,7 @@
         }
         function go(){
           // console.log($("#search").val());
-          loadIframe("content", "infinity.gif")
+          loadIframe("content", "waiting.html")
           $.get( "/ipts/" + $("#search").val(), function( data ) {
             loadIframe("content", "http://ipfs.io/ipns/" + data)
           });
