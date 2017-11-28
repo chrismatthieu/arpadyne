@@ -32,7 +32,7 @@ curl -v \
   'tiny-tagging-service.herokuapp.com/tags/computes.a' \
   -d '{"hash":"QmYRqJVbVD4eYdm6G7RKCTPrmmaGs7ErrupBrMXXFbwQXj"}'
 
-^ Use IPNS hash
+^ Should use IPNS hash but it's too slow. Using IPFS hash instead.
 
 ## Run
 Update domain in index.js
