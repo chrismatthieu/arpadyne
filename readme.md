@@ -29,8 +29,8 @@ IPTS API - https://github.com/computes/tiny-tagging-service
 curl -v \
   -X PUT \
   -H 'Content-Type: application/json' \
-  'tiny-tagging-service.herokuapp.com/tags/computes.com' \
-  -d '{"hash":"QmYHAswgHExLkr5mNSGPGsnBcgrpnkZRem2dZMLynEipzS"}'
+  'tiny-tagging-service.herokuapp.com/tags/computes.a' \
+  -d '{"hash":"QmYRqJVbVD4eYdm6G7RKCTPrmmaGs7ErrupBrMXXFbwQXj"}'
 
 ^ Use IPNS hash
 
