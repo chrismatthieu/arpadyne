@@ -4,7 +4,7 @@ const domain = "computes.a"
 const run = async () => {
   let hashObj = await get(domain)
   console.log(hashObj.hash)
-  exec('open http://ipfs.io/ipfs/' + hashObj.hash, (err, stdout, stderr) => {
+  exec('open http://ipfs.io/ipns/' + hashObj.hash, (err, stdout, stderr) => {
     if (err) {
       console.error(err);
       return;
