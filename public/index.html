@@ -14,8 +14,10 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="search" value="computes.a">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="go();">Go</button>
+        <!-- <form id="myform" class="form-inline my-8 my-md-0" onsubmit="return go()"> -->
+          <input class="form-control mr-sm-2" type="search" placeholder="some-arpadyne-domain.a" aria-label="Search" id="search" autofocus>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="go();">Go</button>
+        <!-- </form> -->
       </div>
     </nav>
     <div class="embed-responsive embed-responsive-21by9">
@@ -49,6 +51,7 @@
           $.get( "/ipts/" + $("#search").val(), function( data ) {
             // loadIframe("content", "https://ipfs.io/ipns/" + data)
             loadIframe("content", "https://ipfs.io/ipfs/" + data)
+            // $("#search").focus()
           });
         }
     </script>
