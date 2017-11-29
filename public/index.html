@@ -5,6 +5,16 @@
     <title>Arpadyne</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="icon" href="computes.ico">
+    <style>
+    #myform{
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+    }
+    #myform input {
+      flex-grow: 1;
+    }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -14,10 +24,10 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- <form id="myform" class="form-inline my-8 my-md-0" onsubmit="return go()"> -->
+        <form id="myform" class="form-inline my-8 my-md-0">
           <input class="form-control mr-sm-2" type="search" placeholder="some-arpadyne-domain.a" aria-label="Search" id="search" autofocus>
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="go();">Go</button>
-        <!-- </form> -->
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
+        </form>
       </div>
     </nav>
     <div class="embed-responsive embed-responsive-21by9">
@@ -37,23 +47,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script type="text/javascript">
-        function loadIframe(iframeName, url) {
-            var $iframe = $('#' + iframeName);
-            if ( $iframe.length ) {
-                $iframe.attr('src',url);
-                return false;
-            }
-            return true;
-        }
-        function go(){
-          // console.log($("#search").val());
-          loadIframe("content", "/waiting.html")
-          $.get( "/ipts/" + $("#search").val(), function( data ) {
-            // loadIframe("content", "https://ipfs.io/ipns/" + data)
-            loadIframe("content", "https://ipfs.io/ipfs/" + data)
-            // $("#search").focus()
-          });
-        }
-    </script>
+    function loadIframe(iframeName, url) {
+  var $iframe = $("#" + iframeName)
+  if ($iframe.length) {
+    $iframe.attr("src", url)
+    return false
+  }
+  return true
+}
+function go() {
+  // console.log($("#search").val());
+  loadIframe("content", "/waiting.html")
+  $.get("/ipts/" + $("#search").val(), function(data) {
+    // loadIframe("content", "https://ipfs.io/ipns/" + data)
+    loadIframe("content", "https://ipfs.io/ipfs/" + data)
+    // $("#search").focus()
+  })
+}
+$(function() {
+  $("#myform").submit(function($event) {
+    $event.preventDefault()
+    go()
+  })
+})
+</script>
   </body>
 </html>
