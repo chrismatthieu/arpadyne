@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Arpadyne</title>
+    <title>ARPADYNE</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="icon" href="computes.ico">
     <style>
@@ -14,6 +14,7 @@
     #myform input {
       flex-grow: 1;
     }
+    html, body, iframe { height: 100%; }
     </style>
   </head>
   <body>
@@ -31,7 +32,7 @@
       </div>
     </nav>
     <div class="embed-responsive embed-responsive-21by9">
-      <iframe id="content" name="content" class="embed-responsive-item" src="" height="100%" width="100%"></iframe>
+      <iframe id="content" name="content" class="embed-responsive-item" src="/arpadyne.html" frameborder="0" width="100%" height="100%"></iframe>
     </div>
     <footer class="footer">
       <div class="container"><br/>
@@ -55,10 +56,13 @@
   }
   return true
 }
-function go() {
+function go(domain) {
+  if(domain == undefined){
+    domain = $("#search").val()
+  }
   // console.log($("#search").val());
   loadIframe("content", "/waiting.html")
-  $.get("/ipts/" + $("#search").val(), function(data) {
+  $.get("/ipts/" + domain, function(data) {
     // loadIframe("content", "https://ipfs.io/ipns/" + data)
     loadIframe("content", "https://ipfs.io/ipfs/" + data)
     // $("#search").focus()
@@ -66,9 +70,13 @@ function go() {
 }
 $(function() {
   $("#myform").submit(function($event) {
-    $event.preventDefault() 
+    $event.preventDefault()
     go()
   })
+  var path = window.location.pathname.substr(1)
+  if (path){
+    go(path)
+  }
 })
 </script>
   </body>
