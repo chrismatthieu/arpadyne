@@ -63,9 +63,12 @@ function go(domain) {
   // console.log($("#search").val());
   loadIframe("content", "/waiting.html")
   $.get("/ipts/" + domain, function(data) {
-    // loadIframe("content", "https://ipfs.io/ipns/" + data)
-    loadIframe("content", "https://ipfs.io/ipfs/" + data)
-    // $("#search").focus()
+    console.log('data',data);
+    if (data == 404){
+      loadIframe("content", "/404.html")
+    } else {
+      loadIframe("content", "https://ipfs.io/ipfs/" + data)
+    }
   })
 }
 $(function() {

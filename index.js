@@ -7,7 +7,12 @@ app.use(express.static('public'))
 app.get('/ipts/:domain', async (req, res) => {
   // console.log(req.params.domain);
   const ipts = await get(req.params.domain.toLowerCase())
-  res.send(ipts.hash)
+  if (ipts == null){
+    var hash = "404"
+  } else {
+    var hash = ipts.hash
+  }
+  res.send(hash)
 })
 
 app.get('/*', function(req, res){
