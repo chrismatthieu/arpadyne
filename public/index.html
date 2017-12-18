@@ -22,10 +22,6 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="/">ARPADYNE</a>
-      <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button> -->
-
       <div class="navbar-collapse" id="navbarSupportedContent">
         <form id="myform" class="form-inline my-8 my-md-0">
           <input class="form-control mr-sm-2" type="search" placeholder="some-arpadyne-domain.a" aria-label="Search" id="search" autofocus>
@@ -33,27 +29,16 @@
         </form>
       </div>
     </nav>
-    <div class="embed-responsive embed-responsive-21by9">
+    <div class="embed-responsive embed-responsive-21by9" id="div-content">
       <iframe id="content" name="content" class="embed-responsive-item" src="/arpadyne.html" frameborder="0" width="100%" height="100%"></iframe>
     </div>
-    <!-- <footer class="footer">
-      <div class="container"><br/>
-        <div class="row">
-          <div class="col-lg-9">
-            <span id="hash" class="text-muted"></span>
-          </div>
-          <div class="col-lg-3 pull-right">
-            <span class="text-muted">powered by <a href="https://computes.com">computes.com</a></span>
-          </div>
-        </div>
-      </div>
-    </footer> -->
     <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
     <script type="text/javascript">
       function loadIframe(iframeName, url) {
         var $iframe = $("#" + iframeName)
@@ -90,6 +75,53 @@
           go(path)
         }
       })
+
+      // Create the IPFS node instance
+      const repoPath = 'ipfs-' + Math.random()
+
+      // Create an IPFS node
+      const node = new Ipfs({
+        init: false,
+        start: false,
+        repo: repoPath
+      })
+
+      // Init the node
+      node.init(handleInit)
+
+      function handleInit (err) {
+        if (err) {
+          throw err
+        }
+
+        node.start(() => {
+          console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
+
+          node.files.cat('QmSvCiezPhnGaVnFgzPXhr28bxUW6XALHrSoJV14gitEgy/index.html', function (err, stream) {
+                var res = ''
+
+                stream.on('data', function (chunk) {
+                  res += chunk.toString()
+                })
+
+                stream.on('error', function (err) {
+                  console.error('Error - ipfs files cat ', err)
+                })
+
+                stream.on('end', function () {
+                  console.log('Got:', res)
+                  // $("#div-content").html(res)
+
+                  var $iframe = $("#content")
+                  if ($iframe.length) {
+                    $iframe.attr("srcdoc", res)
+                  }
+
+                })
+              })
+
+        })
+      }
     </script>
   </body>
 </html>
