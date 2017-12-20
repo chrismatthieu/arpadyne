@@ -40,3 +40,4 @@ node index.js
 
 ## Notes
 https://gist.github.com/claus/1287f47b5fbaaea338ac8a04d02bf258
+https://github.com/VictorBjelkholm/ipfscrape
