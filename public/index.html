@@ -38,7 +38,9 @@
       crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
+    <!-- <script src="https://unpkg.com/ipfs@0.27.5/dist/index.js"></script> -->
+    <!-- <script src="https://unpkg.com/ipfs@0.27.3/dist/index.js"></script> -->
+    <script src="https://unpkg.com/ipfs/dist/index.js"></script>
     <script type="text/javascript">
       function loadIframe(iframeName, url) {
         var $iframe = $("#" + iframeName)
@@ -81,9 +83,16 @@
 
       // Create an IPFS node
       const node = new Ipfs({
-        init: false,
-        start: false,
-        repo: repoPath
+        "init": false,
+        "start": false,
+        "repo": repoPath,
+        "Addresses": {
+          "Swarm": [
+            "/ip4/127.0.0.1/tcp/4001"
+          ],
+          "API": "/ip4/0.0.0.0/tcp/5001",
+          "Gateway": "/ip4/127.0.0.1/tcp/8080"
+        }
       })
 
       // Init the node
@@ -95,30 +104,94 @@
         }
 
         node.start(() => {
-          console.log('Online status: ', node.isOnline() ? 'online' : 'offline')
+          console.log('status: ', node.isOnline() ? 'online' : 'offline')
 
-          node.files.cat('QmSvCiezPhnGaVnFgzPXhr28bxUW6XALHrSoJV14gitEgy/index.html', function (err, stream) {
-                var res = ''
+          // node.block.get('QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr', function (err, file) {
+          //   if (err) {
+          //     throw err
+          //   }
+          //   // console.log(JSON.stringify(file));
+          //   console.log(file.data.toString('utf8'))
+          // })
 
-                stream.on('data', function (chunk) {
-                  res += chunk.toString()
-                })
 
-                stream.on('error', function (err) {
-                  console.error('Error - ipfs files cat ', err)
-                })
+          node.files.get('QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr', function (err, files) {
+            console.log("error", err);
+            files.forEach((file) => {
+              console.log(file.path)
+              console.log(file.content.toString('utf8'))
+              var $iframe = $("#content")
+              $iframe.attr("srcdoc", file.content.toString('utf8'))
+            })
+          })
 
-                stream.on('end', function () {
-                  console.log('Got:', res)
-                  // $("#div-content").html(res)
 
-                  var $iframe = $("#content")
-                  if ($iframe.length) {
-                    $iframe.attr("srcdoc", res)
-                  }
+          // node.files.cat('QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr/index.html', function (err, files) {
+          //   files.forEach((file) => {
+          //     console.log(file.path)
+          //     console.log(file.content.toString('utf8'))
+          //     var $iframe = $("#content")
+          //     $iframe.attr("srcdoc", file.content.toString('utf8'))
+          //   })
+          // })
 
-                })
-              })
+
+          // const stream = node.files.getReadableStream('QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr/index.html')
+          //
+          // stream.on('data', (file) => {
+          //   // write the file's path and contents to standard out
+          //   console.log(file.path)
+          //   console.log(file.path.toString())
+          //   var $iframe = $("#content")
+          //   $iframe.attr("srcdoc", file.content.toString('utf8'))
+          // })
+
+
+
+          // const validCID = 'QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr'
+          //
+          // const stream = node.files.getReadableStream(validCID)
+          //
+          // pull(
+          //   stream,
+          //   pull.collect((err, files) => {
+          //     if (err) {
+          //       throw err
+          //     }
+          //
+          //     files.forEach((file) => {
+          //       console.log(file.path)
+          //       console.log(file.path.toString())
+          //     })
+          //   })
+          // )
+
+
+          // node.files.get('QmRi6mW7UJB1t7p99qRhFv4F93zVWPHKrZprxqVF9rJaVD/index.html', function (err, stream) {
+          //       var res = ''
+          //       console.log(stream[0].hash.toString());
+          //       var $iframe = $("#content")
+          //       $iframe.attr("srcdoc", stream[0].hash.toString())
+          //
+          //       // stream.on('data', function (chunk) {
+          //       //   res += chunk.toString()
+          //       // })
+          //       //
+          //       // stream.on('error', function (err) {
+          //       //   console.error('Error - ipfs files cat ', err)
+          //       // })
+          //       //
+          //       // stream.on('end', function () {
+          //       //   console.log('Got:', res)
+          //       //   // $("#div-content").html(res)
+          //       //
+          //       //   var $iframe = $("#content")
+          //       //   if ($iframe.length) {
+          //       //     $iframe.attr("srcdoc", res)
+          //       //   }
+          //       //
+          //       // })
+          //     })
 
         })
       }
