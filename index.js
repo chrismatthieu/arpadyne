@@ -9,7 +9,7 @@ function repo () {
 const ipfs = new IPFS({
   repo: repo(),
   start: true,
-  EXPERIMENTAL: { pubsub: true, relay: { enabled: true, hop: { enabled: true } } },
+  EXPERIMENTAL: { pubsub: true },
   config: {
     Addresses: {
       Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']
@@ -20,12 +20,12 @@ ipfs.once('ready', () => ipfs.id((err, info) => {
   if (err) { throw err }
 
   console.log('IPFS node ready with address ' + info.id)
-  ipfs.swarm.connect("/dns4/philes.co/tcp/4017/wss/ipfs/QmcmpPQ3JckMMLTVRcCpwvM75vm43i78D7Vbxs7bNRj1dH", (err) => {
-    if (err) {
-      return console.error(err)
-    }
-    console.log("connected to swarm via relay");
-  })
+  // ipfs.swarm.connect("/dns4/philes.co/tcp/4017/wss/ipfs/QmcmpPQ3JckMMLTVRcCpwvM75vm43i78D7Vbxs7bNRj1dH", (err) => {
+  //   if (err) {
+  //     return console.error(err)
+  //   }
+  //   console.log("connected to swarm via relay");
+  // })
 
   const orbitdb = new OrbitDB(ipfs)
   const initDB = async () => {
