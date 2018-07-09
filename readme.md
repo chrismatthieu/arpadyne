@@ -30,7 +30,7 @@ curl -v \
   -X PUT \
   -H 'Content-Type: application/json' \
   'tiny-tagging-service.herokuapp.com/tags/computes.a' \
-  -d '{"hash":"QmYRqJVbVD4eYdm6G7RKCTPrmmaGs7ErrupBrMXXFbwQXj"}'
+  -d '{"hash":"QmXABAmjhBX4q9niDidia1wJFiZkhCr6NVYfeJmWtfUQ1z"}'
 
 ^ Should use IPNS hash but it's too slow. Using IPFS hash instead.
 
