@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#3c3f46">
     <title>ARPADYNE</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="icon" href="computes.ico">
     <style>
+    @import url('https://fonts.googleapis.com/css?family=Lekton:400,700|Open+Sans:300,400,600,700');
+
     #myform{
       width: 100%;
       display: flex;
@@ -16,7 +18,7 @@
     #myform input {
       flex-grow: 1;
     }
-    html, body, iframe, div { height: 100%; margin:0;}
+    html, body, iframe, div {height:100%;margin:0;font-family: 'Lekton', Helvetica, Arial, sans-serif;}
     </style>
   </head>
   <body>
@@ -32,169 +34,39 @@
     <div class="embed-responsive embed-responsive-21by9" id="div-content">
       <iframe id="content" name="content" class="embed-responsive-item" src="/arpadyne.html" frameborder="0" width="100%" height="100%"></iframe>
     </div>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.min.js"
-      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <!-- <script src="https://unpkg.com/ipfs@0.27.5/dist/index.js"></script> -->
-    <!-- <script src="https://unpkg.com/ipfs@0.27.3/dist/index.js"></script> -->
-    <script src="https://unpkg.com/ipfs/dist/index.js"></script>
-    <script type="text/javascript">
-      function loadIframe(iframeName, url) {
-        var $iframe = $("#" + iframeName)
-        if ($iframe.length) {
-          $iframe.attr("src", url)
-          return false
-        }
-        return true
-      }
-      function go(domain) {
-        if(domain == undefined){
-          domain = $("#search").val()
-        }
-        // console.log($("#search").val());
-        loadIframe("content", "/waiting.html")
-        $.get("/ipts/" + domain, function(data) {
-          console.log('data',data);
-          $("#hash").text(data)
-          if (data == 404){
-            loadIframe("content", "/404.html")
-          } else {
-            loadIframe("content", "https://ipfs.io/ipfs/" + data)
-          }
-        })
-      }
-      $(function() {
-        $("#myform").submit(function($event) {
-          $event.preventDefault()
-          go()
-        })
-        var path = window.location.pathname.substr(1)
-        if (path){
-          $("#search").val(path)
-          go(path)
-        }
-      })
 
-      // Create the IPFS node instance
-      const repoPath = 'ipfs-' + Math.random()
+    <!-- Button trigger modal -->
+    <a data-toggle="modal" data-target="#addModal" id="addLink" style="display:none">
+      Add domain
+    </a>
 
-      // Create an IPFS node
-      const node = new Ipfs({
-        "init": false,
-        "start": false,
-        "repo": repoPath,
-        "Addresses": {
-          "Swarm": [
-            "/ip4/127.0.0.1/tcp/4001"
-          ],
-          "API": "/ip4/0.0.0.0/tcp/5001",
-          "Gateway": "/ip4/127.0.0.1/tcp/8080"
-        }
-      })
+    <!-- Modal -->
+    <div style="height:250px" class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Domain</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              <form id="AddDomain" >
+                <input class="form-control" id="domain" placeholder="some-arpadyne-domain.a">
+                <input class="form-control" id="hash" placeholder="Qm...">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add</button>
+              </form>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      // Init the node
-      node.init(handleInit)
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="bundle.js"></script>
 
-      function handleInit (err) {
-        if (err) {
-          throw err
-        }
-
-        node.start(() => {
-          console.log('status: ', node.isOnline() ? 'online' : 'offline')
-
-          // node.block.get('QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr', function (err, file) {
-          //   if (err) {
-          //     throw err
-          //   }
-          //   // console.log(JSON.stringify(file));
-          //   console.log(file.data.toString('utf8'))
-          // })
-
-
-          node.files.get('QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr', function (err, files) {
-            console.log("error", err);
-            files.forEach((file) => {
-              console.log(file.path)
-              console.log(file.content.toString('utf8'))
-              var $iframe = $("#content")
-              $iframe.attr("srcdoc", file.content.toString('utf8'))
-            })
-          })
-
-
-          // node.files.cat('QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr/index.html', function (err, files) {
-          //   files.forEach((file) => {
-          //     console.log(file.path)
-          //     console.log(file.content.toString('utf8'))
-          //     var $iframe = $("#content")
-          //     $iframe.attr("srcdoc", file.content.toString('utf8'))
-          //   })
-          // })
-
-
-          // const stream = node.files.getReadableStream('QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr/index.html')
-          //
-          // stream.on('data', (file) => {
-          //   // write the file's path and contents to standard out
-          //   console.log(file.path)
-          //   console.log(file.path.toString())
-          //   var $iframe = $("#content")
-          //   $iframe.attr("srcdoc", file.content.toString('utf8'))
-          // })
-
- 
-
-          // const validCID = 'QmTRWksKB11cvqr3yYPZ9UbQUyckFCxM5E2rMAeJEmhbhr'
-          //
-          // const stream = no de.files.getReadableStream(validCID)
-          //
-          // pull(
-          //   stream,
-          //   pull.collect((err, files) => {
-          //     if (err) {
-          //       throw err
-          //     }
-          //
-          //     files.forEach((file) => {
-          //       console.log(file.path)
-          //       console.log(file.path.toString())
-          //     })
-          //   })
-          // )
-
-
-          // node.files.get('QmRi6mW7UJB1t7p99qRhFv4F93zVWPHKrZprxqVF9rJaVD/index.html', function (err, stream) {
-          //       var res = ''
-          //       console.log(stream[0].hash.toString());
-          //       var $iframe = $("#content")
-          //       $iframe.attr("srcdoc", stream[0].hash.toString())
-          //
-          //       // stream.on('data', function (chunk) {
-          //       //   res += chunk.toString()
-          //       // })
-          //       //
-          //       // stream.on('error', function (err) {
-          //       //   console.error('Error - ipfs files cat ', err)
-          //       // })
-          //       //
-          //       // stream.on('end', function () {
-          //       //   console.log('Got:', res)
-          //       //   // $("#div-content").html(res)
-          //       //
-          //       //   var $iframe = $("#content")
-          //       //   if ($iframe.length) {
-          //       //     $iframe.attr("srcdoc", res)
-          //       //   }
-          //       //
-          //       // })
-          //     })
-
-        })
-      }
-    </script>
   </body>
 </html>

@@ -2,15 +2,19 @@
   "name": "arpadyne-nodejs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "compile": "browserify index.js > public/bundle.js ",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "browserify": "^16.2.2",
     "express": "^4.16.2",
-    "ipts": "0.0.5"
+    "ipfs": "^0.30.0",
+    "ipts": "0.0.5",
+    "orbit-db": "^0.19.8"
   }
 }
