@@ -3,6 +3,10 @@
 const IPFS = require('ipfs')
 const OrbitDB = require('orbit-db')
 let db, dns
+var path = window.location.pathname.substr(1)
+if (path){
+  loadIframe("content", "/waiting.html")
+}
 function repo () {
   return 'ipfs/arpadyne'
 }
@@ -47,7 +51,6 @@ ipfs.once('ready', () => ipfs.id((err, info) => {
     console.log("Bootstrap domains loaded.");
     $("#addLink").show()
 
-    var path = window.location.pathname.substr(1)
     if (path){
       $("#search").val(path)
       go(path)
@@ -82,8 +85,6 @@ function go(domain) {
     domain = $("#search").val()
   }
 
-  loadIframe("content", "/waiting.html")
-
   dns = db.get(domain)
   console.log("dns", dns);
 
@@ -97,6 +98,7 @@ function go(domain) {
 $(function() {
   $("#myform").submit(function($event) {
     $event.preventDefault()
+    loadIframe("content", "/waiting.html")
     go()
   })
 })
