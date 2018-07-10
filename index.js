@@ -54,7 +54,21 @@ ipfs.once('ready', () => ipfs.id((err, info) => {
   const orbitdb = new OrbitDB(ipfs)
   const initDB = async () => {
     // Create / Open a database
-    db = await orbitdb.keyvalue('domains')
+    // db = await orbitdb.keyvalue('domains')
+
+    db = await orbitdb.open("/orbitdb/QmSEjFUcS6Dyrk2S1y9D5sxcA8cUbh6XsVAZNf1VxugUQm/domains", {
+      // If database doesn't exist, create it
+      create: true,
+      overwrite: true,
+      // Load only the local version of the database,
+      // don't load the latest from the network yet
+      localOnly: false,
+      type: "keyvalue",
+      // If "Public" flag is set, allow anyone to write to the database,
+      // otherwise only the creator of the database can write
+      write: true ? ['*'] : [],
+    })
+
     await db.load()
 
     // // Listen for updates from peers
