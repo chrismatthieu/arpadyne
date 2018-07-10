@@ -56,7 +56,7 @@ ipfs.once('ready', () => ipfs.id((err, info) => {
     // Create / Open a database
     // db = await orbitdb.keyvalue('domains')
 
-    db = await orbitdb.open("/orbitdb/QmSEjFUcS6Dyrk2S1y9D5sxcA8cUbh6XsVAZNf1VxugUQm/domains", {
+    db = await orbitdb.open("/orbitdb/QmSEjFUcS6Dyrk2S1y9D5sxcA8cUbh6XsVAZNf1VxugUQm/domains2", {
       // If database doesn't exist, create it
       create: true,
       overwrite: true,
