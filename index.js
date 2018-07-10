@@ -7,19 +7,39 @@ var path = window.location.pathname.substr(1)
 if (path){
   loadIframe("content", "/waiting.html")
 }
-function repo () {
-  return 'ipfs/arpadyne'
-}
+// function repo () {
+//   return 'ipfs/arpadyne'
+// }
+// const ipfs = new IPFS({
+//   repo: repo(),
+//   start: true,
+//   EXPERIMENTAL: { pubsub: true },
+//   config: {
+//     Addresses: {
+//       Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']
+//     }
+//   }
+// })
+
 const ipfs = new IPFS({
-  repo: repo(),
+  repo: '/orbitdb/examples/browser/new/ipfs/0.27.3',
   start: true,
-  EXPERIMENTAL: { pubsub: true },
+  EXPERIMENTAL: {
+    pubsub: true,
+  },
   config: {
     Addresses: {
-      Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']
-    }
+      Swarm: [
+        // Use IPFS dev signal server
+        // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
+        '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star',
+        // Use local signal server
+        // '/ip4/0.0.0.0/tcp/9090/wss/p2p-webrtc-star',
+      ]
+    },
   }
 })
+
 ipfs.once('ready', () => ipfs.id((err, info) => {
   if (err) { throw err }
 
@@ -37,10 +57,20 @@ ipfs.once('ready', () => ipfs.id((err, info) => {
     db = await orbitdb.keyvalue('domains')
     await db.load()
 
-    // Listen for updates from peers
-    db.events.on('replicated', (address) => {
-      console.log("replicated", address);
-    })
+    // // Listen for updates from peers
+    // db.events.on('replicated', (address) => {
+    //   console.log("replicated", address);
+    // })
+
+    // When the database is ready (ie. loaded), display results
+    db.events.on('ready', () => console.log(db))
+    // When database gets replicated with a peer, display results
+    db.events.on('replicated', () => console.log(db))
+    // When we update the database, display result
+    db.events.on('write', () => console.log(db))
+
+    db.events.on('replicate.progress', () => console.log(db))
+
 
     // Add bootstrap domains
     await db.set('computes.a', { hash: 'QmXABAmjhBX4q9niDidia1wJFiZkhCr6NVYfeJmWtfUQ1z' })
@@ -69,6 +99,7 @@ ipfs.once('ready', () => ipfs.id((err, info) => {
   }
 
   initDB()
+
 
 }))
 
