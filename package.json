@@ -13,8 +13,8 @@
   "dependencies": {
     "browserify": "^16.2.2",
     "express": "^4.16.2",
-    "ipfs": "^0.30.0",
+    "ipfs": "^0.32.3",
     "ipts": "0.0.5",
-    "orbit-db": "^0.19.8"
+    "orbit-db": "^0.19.9"
   }
 }
